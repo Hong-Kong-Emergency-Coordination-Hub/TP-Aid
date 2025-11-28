@@ -15,10 +15,20 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>(MOCK_POSTS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(MOCK_POSTS);
+  const [isLargeText, setIsLargeText] = useState(false);
 
-  // Filter logic
+  // Handle large font toggle effect
   useEffect(() => {
-    let result = posts;
+    if (isLargeText) {
+      document.documentElement.classList.add('large-text');
+    } else {
+      document.documentElement.classList.remove('large-text');
+    }
+  }, [isLargeText]);
+
+  // Filter and sort logic
+  useEffect(() => {
+    let result = [...posts];
 
     if (activeTab !== 'all') {
       result = result.filter(post => post.category === activeTab);
@@ -33,6 +43,13 @@ const App: React.FC = () => {
       );
     }
 
+    // Sort: Open posts first, Closed posts last
+    result.sort((a, b) => {
+      const statusA = a.status === 'closed' ? 1 : 0;
+      const statusB = b.status === 'closed' ? 1 : 0;
+      return statusA - statusB;
+    });
+
     setFilteredPosts(result);
   }, [activeTab, searchQuery, posts]);
 
@@ -40,9 +57,24 @@ const App: React.FC = () => {
     setPosts([newPost, ...posts]);
   };
 
+  const handleToggleStatus = (postId: string) => {
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post.id === postId) {
+        return { 
+          ...post, 
+          status: post.status === 'closed' ? 'open' : 'closed' 
+        };
+      }
+      return post;
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 relative">
-      <Navbar />
+      <Navbar 
+        isLargeText={isLargeText} 
+        onToggleFont={() => setIsLargeText(!isLargeText)} 
+      />
       
       <main className="max-w-2xl mx-auto px-4 pt-20">
         <EmergencyBanner />
@@ -57,7 +89,10 @@ const App: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <PostList posts={filteredPosts} />
+          <PostList 
+            posts={filteredPosts} 
+            onStatusChange={handleToggleStatus}
+          />
         </div>
       </main>
 

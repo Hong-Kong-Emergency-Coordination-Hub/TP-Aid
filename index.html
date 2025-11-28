@@ -23,6 +23,17 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+      
+      /* Accessibility: Large Text Mode */
+      html.large-text {
+        font-size: 130%; /* Increase base font size by 30% */
+      }
+      
+      @media (max-width: 640px) {
+        html.large-text {
+          font-size: 120%; /* Slightly smaller increase on mobile to preserve layout */
+        }
+      }
     </style>
   <script type="importmap">
 {

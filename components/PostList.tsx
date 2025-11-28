@@ -5,9 +5,10 @@ import { Inbox } from 'lucide-react';
 
 interface PostListProps {
   posts: Post[];
+  onStatusChange?: (id: string) => void;
 }
 
-export const PostList: React.FC<PostListProps> = ({ posts }) => {
+export const PostList: React.FC<PostListProps> = ({ posts, onStatusChange }) => {
   if (posts.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -23,7 +24,11 @@ export const PostList: React.FC<PostListProps> = ({ posts }) => {
   return (
     <div className="space-y-4">
       {posts.map((post) => (
-        <Card key={post.id} post={post} />
+        <Card 
+          key={post.id} 
+          post={post} 
+          onStatusChange={onStatusChange}
+        />
       ))}
     </div>
   );

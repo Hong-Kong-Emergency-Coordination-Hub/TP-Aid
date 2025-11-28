@@ -2,6 +2,8 @@ export type Category = 'volunteer' | 'supplies' | 'help_request' | 'official' | 
 
 export type TabType = 'all' | Category;
 
+export type PostStatus = 'open' | 'closed';
+
 export interface Post {
   id: string;
   category: Category;
@@ -12,6 +14,7 @@ export interface Post {
   urgent?: boolean;
   verified?: boolean; // For NGO/Official posts
   contact?: string;
+  status?: PostStatus;
 }
 
 export interface EmergencyContact {
