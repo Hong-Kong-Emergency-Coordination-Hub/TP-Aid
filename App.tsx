@@ -7,7 +7,6 @@ import { NewPostModal } from './components/NewPostModal';
 import { Category, Post, TabType, PageType } from './types';
 import { MOCK_POSTS, INFO_CATEGORIES, AID_CATEGORIES } from './constants';
 import { Plus, Map, List } from 'lucide-react';
-import { SmartAssistant } from './components/SmartAssistant';
 import { LiveMap } from './components/LiveMap';
 import { BottomNav } from './components/BottomNav';
 
@@ -106,7 +105,7 @@ const App: React.FC = () => {
         <EmergencyBanner />
         
         {/* Sticky Header with Filter & View Toggle */}
-        <div className="mt-2 sticky top-16 z-30 bg-gray-50/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-gray-100 transition-all duration-200">
+        <div className="mt-2 sticky top-16 z-30 bg-gray-50/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-gray-100 transition-all duration-200 shadow-sm">
           <FilterBar 
             activeTab={activeTab} 
             onTabChange={setActiveTab} 
@@ -117,7 +116,7 @@ const App: React.FC = () => {
           
           {/* View Toggle */}
           <div className="mt-3 flex justify-between items-end">
-            <h2 className="text-sm font-semibold text-gray-500 pl-1 uppercase tracking-wider">
+            <h2 className="text-lg font-bold text-gray-800 pl-1 tracking-tight">
                {activePage === 'info' ? '即時資訊' : '互助請求'}
             </h2>
             <div className="bg-gray-200 p-1 rounded-lg flex items-center">
@@ -171,11 +170,6 @@ const App: React.FC = () => {
         >
           <Plus className="w-6 h-6" />
         </button>
-      </div>
-
-      {/* AI Assistant */}
-      <div className="fixed bottom-24 left-6 md:left-[calc(50%-320px)] z-40">
-         <SmartAssistant />
       </div>
 
       <NewPostModal 

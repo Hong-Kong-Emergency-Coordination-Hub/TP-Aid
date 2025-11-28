@@ -36,7 +36,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pb-2">
       {/* Search Input */}
       <div className="relative mx-1">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

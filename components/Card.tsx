@@ -12,7 +12,7 @@ export const Card: React.FC<CardProps> = ({ post, onStatusChange }) => {
   const isClosed = post.status === 'closed';
 
   return (
-    <div className={`rounded-2xl p-5 shadow-sm border mb-4 transition-all hover:shadow-md relative overflow-hidden ${
+    <div className={`rounded-2xl p-5 shadow-sm border mb-4 transition-all hover:shadow-md relative overflow-hidden flex flex-col ${
       isClosed ? 'bg-gray-50 border-gray-100 opacity-80' : 'bg-white border-gray-100'
     }`}>
       
