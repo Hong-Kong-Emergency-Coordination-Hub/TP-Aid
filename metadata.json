@@ -1,0 +1,9 @@
+{
+  "name": "康福苑互助站",
+  "description": "大埔 11.26 火災事故互助協調平台，連結義工、物資及 NGO 資源。",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
