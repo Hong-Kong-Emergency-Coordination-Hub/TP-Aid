@@ -13,6 +13,9 @@ export type TabType = 'all' | Category;
 
 export type PostStatus = 'open' | 'closed';
 
+// New type for the main bottom navigation views
+export type PageType = 'info' | 'aid';
+
 export interface Post {
   id: string;
   category: Category;
@@ -20,6 +23,10 @@ export interface Post {
   description: string;
   location: string;
   timestamp: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
   urgent?: boolean;
   verified?: boolean; // For NGO/Government posts
   contact?: string;

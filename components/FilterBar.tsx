@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabType } from '../types';
+import { TabType, Category } from '../types';
 import { Search } from 'lucide-react';
 
 interface FilterBarProps {
@@ -7,27 +7,34 @@ interface FilterBarProps {
   onTabChange: (tab: TabType) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  allowedCategories: Category[];
 }
 
-const TABS: { id: TabType; label: string }[] = [
-  { id: 'all', label: '全部' },
+const ALL_TABS: { id: Category; label: string }[] = [
   { id: 'government', label: '政府資訊' },
-  { id: 'help_request', label: '求助' },
-  { id: 'housing', label: '安置 / 房屋' },
-  { id: 'social_worker', label: '社工支援' },
-  { id: 'organization', label: '組織資訊' },
   { id: 'business', label: '商鋪資訊' },
+  { id: 'organization', label: '組織資訊' },
+  { id: 'social_worker', label: '社工支援' },
+  { id: 'housing', label: '安置 / 房屋' },
+  { id: 'medical', label: '醫療' },
+  { id: 'help_request', label: '求助' },
   { id: 'volunteer', label: '義工' },
   { id: 'supplies', label: '物資' },
-  { id: 'medical', label: '醫療' },
 ];
 
 export const FilterBar: React.FC<FilterBarProps> = ({ 
   activeTab, 
   onTabChange, 
   searchQuery, 
-  onSearchChange 
+  onSearchChange,
+  allowedCategories
 }) => {
+  // Filter tabs based on the current page context
+  const visibleTabs = [
+    { id: 'all' as TabType, label: '全部' },
+    ...ALL_TABS.filter(tab => allowedCategories.includes(tab.id))
+  ];
+
   return (
     <div className="flex flex-col gap-3">
       {/* Search Input */}
@@ -46,12 +53,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
       {/* Filter Chips - Horizontal Scroll */}
       <div className="flex overflow-x-auto no-scrollbar gap-2 px-1 pb-1">
-        {TABS.map((tab) => {
+        {visibleTabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => onTabChange(tab.id as TabType)}
               className={`
                 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border
                 ${isActive 

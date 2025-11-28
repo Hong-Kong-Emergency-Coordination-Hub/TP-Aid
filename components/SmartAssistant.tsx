@@ -25,7 +25,7 @@ export const SmartAssistant: React.FC = () => {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="bg-white border border-gray-200 text-gray-900 p-3 rounded-full shadow-lg hover:bg-gray-50 transition-all flex items-center gap-2"
+        className="bg-white border border-gray-200 text-gray-900 p-3 rounded-full shadow-lg hover:bg-gray-50 transition-all flex items-center gap-2 active:scale-95"
       >
         <Sparkles className="w-5 h-5 text-gray-600" />
         <span className="text-sm font-medium pr-1 hidden md:block">智能助手</span>
@@ -34,7 +34,7 @@ export const SmartAssistant: React.FC = () => {
   }
 
   return (
-    <div className="bg-white border border-gray-200 shadow-xl rounded-2xl w-80 overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300">
+    <div className="bg-white border border-gray-200 shadow-2xl rounded-2xl w-80 overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300 mb-2">
       <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
         <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gray-600" />
@@ -45,7 +45,7 @@ export const SmartAssistant: React.FC = () => {
         </button>
       </div>
       
-      <div className="p-4 bg-white min-h-[100px] text-sm">
+      <div className="p-4 bg-white min-h-[100px] text-sm max-h-[200px] overflow-y-auto">
         {loading ? (
             <div className="space-y-2 animate-pulse">
                 <div className="h-2 bg-gray-100 rounded w-3/4"></div>
