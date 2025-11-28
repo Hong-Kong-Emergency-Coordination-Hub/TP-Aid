@@ -1,12 +1,16 @@
 import React from 'react';
-import { Type } from 'lucide-react';
+import { Type, LogIn, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface NavbarProps {
   isLargeText?: boolean;
   onToggleFont?: () => void;
+  onLoginClick: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ isLargeText, onToggleFont }) => {
+export const Navbar: React.FC<NavbarProps> = ({ isLargeText, onToggleFont, onLoginClick }) => {
+  const { user, signOut, loading } = useAuth();
+
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200 z-50 h-16 flex items-center justify-center">
       <div className="max-w-2xl w-full px-4 flex justify-between items-center">
@@ -42,6 +46,26 @@ export const Navbar: React.FC<NavbarProps> = ({ isLargeText, onToggleFont }) => 
                新增貼文
              </button>
            </div>
+
+           {!loading && (
+             user ? (
+               <button
+                 onClick={signOut}
+                 className="p-2 text-gray-600 hover:bg-gray-100 rounded-full"
+                 title="登出"
+               >
+                 <LogOut className="w-5 h-5" />
+               </button>
+             ) : (
+               <button
+                 onClick={onLoginClick}
+                 className="p-2 text-black hover:bg-gray-100 rounded-full"
+                 title="登入"
+               >
+                 <LogIn className="w-5 h-5" />
+               </button>
+             )
+           )}
         </div>
       </div>
     </nav>

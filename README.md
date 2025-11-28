@@ -30,9 +30,25 @@
 
 ### 5. 緊急支援工具
 - **緊急聯絡 Banner**：首頁置頂最重要嘅電話（消防、社署、民政處），撳一下就可以即刻打出。
-- **AI 安全助手**：內置由 Google Gemini 驅動嘅智能助手，可以用廣東話回答基本急救知識、安全指引（例如：吸入濃煙點算）。
 
 ## 🛠️ 技術簡介
-- **Frontend**: React, Tailwind CSS (Mobile-first 響應式設計)
-- **Design System**: 參考 iOS Native 風格，Shadcn UI / Magic UI 質感
-- **AI Integration**: Google Gemini API (提供即時安全建議)
+- **Frontend**: React, Tailwind CSS v4 (Mobile-first 響應式設計)
+- **Backend**: Supabase (PostgreSQL + PostGIS)
+- **Auth**: Supabase Auth (Magic Link)
+- **Maps**: Leaflet + PostGIS (地理位置標記)
+
+## 🚀 Setup Instructions
+
+1.  **Clone the repository**
+2.  **Install dependencies**: `npm install`
+3.  **Setup Environment**:
+    - Create a `.env` file in the root.
+    - Add your Supabase credentials:
+      ```
+      VITE_SUPABASE_URL=your_supabase_url
+      VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+      ```
+4.  **Run locally**: `npm run dev`
+
+**Database Setup:**
+SQL migration scripts are located in `supabase_schema.sql`. Run these in your Supabase SQL Editor to set up the tables and policies.

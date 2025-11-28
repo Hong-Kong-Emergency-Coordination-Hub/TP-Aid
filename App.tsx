@@ -9,17 +9,99 @@ import { MOCK_POSTS, INFO_CATEGORIES, AID_CATEGORIES } from './constants';
 import { Plus, Map, List } from 'lucide-react';
 import { LiveMap } from './components/LiveMap';
 import { BottomNav } from './components/BottomNav';
+import { AuthProvider } from './contexts/AuthContext';
+import { LoginModal } from './components/LoginModal';
+import { supabase } from './services/supabaseClient';
+import { AdminDashboard } from './pages/AdminDashboard';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  // Simple URL routing for Admin Dashboard
+  const [isAdminRoute, setIsAdminRoute] = useState(window.location.pathname === '/admin');
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsAdminRoute(window.location.pathname === '/admin');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  if (isAdminRoute) {
+    return <AdminDashboard />;
+  }
+
+  return <MainApp />;
+};
+
+const MainApp: React.FC = () => {
   // State
   const [activePage, setActivePage] = useState<PageType>('info'); // 'info' or 'aid'
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [posts, setPosts] = useState<Post[]>(MOCK_POSTS);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(MOCK_POSTS);
   const [isLargeText, setIsLargeText] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+
+  // Fetch posts from Supabase
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching posts:', error);
+        // Fallback to mock data if fetch fails (e.g. table doesn't exist yet)
+        return;
+      }
+
+      if (data && data.length > 0) {
+        // Transform Supabase data to match Post interface
+        // Note: PostGIS handling would need a more complex query or client-side parsing if not returned as GeoJSON
+        const mappedPosts: Post[] = data.map((p: any) => ({
+          id: p.id,
+          category: p.category,
+          title: p.title,
+          description: p.description,
+          location: p.location_text,
+          timestamp: new Date(p.created_at).toLocaleString('zh-HK', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            day: '2-digit',
+            month: '2-digit'
+          }),
+          coordinates: p.location_geo ? {
+             // Simplified parsing, ideally use ST_AsGeoJSON in query
+             lat: p.location_geo.coordinates[1], 
+             lng: p.location_geo.coordinates[0] 
+          } : undefined,
+          urgent: p.urgent,
+          verified: p.is_verified,
+          contact: p.contact,
+          status: p.status
+        }));
+        setPosts(mappedPosts);
+      }
+    };
+
+    fetchPosts();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('public:posts')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
+        fetchPosts();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Logic to switch active categories based on page
   const currentAllowedCategories = activePage === 'info' ? INFO_CATEGORIES : AID_CATEGORIES;
@@ -71,15 +153,36 @@ const App: React.FC = () => {
     setFilteredPosts(result);
   }, [activePage, activeTab, searchQuery, posts, currentAllowedCategories]);
 
-  const handleCreatePost = (newPost: Post) => {
-    setPosts([newPost, ...posts]);
-    // If user posts an aid request while on info page, switch them to aid page so they see it
+  const handleCreatePost = async (newPost: Post) => {
+    // Optimistic update
+    const postWithId = { ...newPost, id: Math.random().toString() }; // Temp ID
+    setPosts([postWithId, ...posts]);
+
+    // Save to Supabase
+    // Note: You'll need to handle coordinates -> PostGIS Point conversion here
+    const { error } = await supabase.from('posts').insert({
+      title: newPost.title,
+      description: newPost.description,
+      category: newPost.category,
+      location_text: newPost.location,
+      // location_geo: ... convert coordinates
+      contact: newPost.contact,
+      urgent: newPost.urgent,
+      status: 'open'
+    });
+
+    if (error) {
+      console.error('Error creating post:', error);
+      // Revert optimistic update or show error
+    }
+
     if (AID_CATEGORIES.includes(newPost.category)) {
       setActivePage('aid');
     }
   };
 
-  const handleToggleStatus = (postId: string) => {
+  const handleToggleStatus = async (postId: string) => {
+    // Optimistic update
     setPosts(prevPosts => prevPosts.map(post => {
       if (post.id === postId) {
         return { 
@@ -89,13 +192,21 @@ const App: React.FC = () => {
       }
       return post;
     }));
+
+    // Update Supabase
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      const newStatus = post.status === 'closed' ? 'open' : 'closed';
+      await supabase.from('posts').update({ status: newStatus }).eq('id', postId);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 relative flex flex-col">
       <Navbar 
         isLargeText={isLargeText} 
-        onToggleFont={() => setIsLargeText(!isLargeText)} 
+        onToggleFont={() => setIsLargeText(!isLargeText)}
+        onLoginClick={() => setIsLoginOpen(true)} 
       />
       
       {/* Added bottom padding for BottomNav */}
@@ -178,10 +289,23 @@ const App: React.FC = () => {
         onSubmit={handleCreatePost}
       />
       
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
+
       {/* Bottom Navigation */}
       <BottomNav activePage={activePage} onPageChange={setActivePage} />
 
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 
