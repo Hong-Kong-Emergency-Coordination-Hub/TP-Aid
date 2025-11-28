@@ -1,20 +1,38 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 康福苑互助站 (Hong Fuk Court Aid Hub)
 
-# Run and deploy your AI Studio app
+這是一個為大埔 11.26 火災事故設計的社區互助 Web 應用程式 (Web App)。主要目的係連結受影響居民、熱心義工、社區組織以及政府資源，提供一個清晰、即時、可信的資訊平台。
 
-This contains everything you need to run your app locally.
+介面設計採用黑白灰簡約風格，強調資訊清晰度同埋嚴肅性，適合緊急情況使用。
 
-View your app in AI Studio: https://ai.studio/apps/drive/1-EeFySS3vyUboHJom61id1iuRN5cQLs2
+## 🌟 主要功能整合
 
-## Run Locally
+### 1. 資訊分類與整合
+我們將混亂的資訊整理為以下清晰類別，方便街坊查閱：
+- **政府資訊**：官方發佈嘅庇護中心、封路消息等。
+- **商鋪資訊**：區內小店提供嘅免費飯盒、充電等支援。
+- **組織資訊**：關愛隊、非牟利機構嘅物資站位置。
+- **社工支援**：情緒支援熱線、輔導服務。
+- **安置 / 房屋**：短期住宿空間提供。
 
-**Prerequisites:**  Node.js
+### 2. 求助與互助 (只限居民與義工)
+為了確保資訊質素，我們限制了公開發佈嘅功能：
+- **尋求協助**：居民可以發佈具體需求（例如：需要輪椅、食水）。
+- **義務服務**：義工可以列出自己能提供嘅幫忙（例如：幫手搬野、暫託寵物）。
+- *註：其他類別（如政府、社工）由管理員或認證機構發佈，以防假資訊。*
 
+### 3. 長者友善設計 (Accessibility)
+- **長者模式 (Large Text Mode)**：頂部設有字體放大按鈕，一鍵將全 App 字體放大，方便老人家睇得清楚。
+- **清晰易讀**：使用高對比度文字，介面簡單直接。
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 4. 狀態管理
+- **案件追蹤**：發佈者可以隨時將貼文標記為「**已解決**」或「**重新開啟**」。
+- **自動過濾**：已解決嘅案件會自動沉底並變灰，確保首頁顯示嘅都係最新、最急切嘅需求。
+
+### 5. 緊急支援工具
+- **緊急聯絡 Banner**：首頁置頂最重要嘅電話（消防、社署、民政處），撳一下就可以即刻打出。
+- **AI 安全助手**：內置由 Google Gemini 驅動嘅智能助手，可以用廣東話回答基本急救知識、安全指引（例如：吸入濃煙點算）。
+
+## 🛠️ 技術簡介
+- **Frontend**: React, Tailwind CSS (Mobile-first 響應式設計)
+- **Design System**: 參考 iOS Native 風格，Shadcn UI / Magic UI 質感
+- **AI Integration**: Google Gemini API (提供即時安全建議)

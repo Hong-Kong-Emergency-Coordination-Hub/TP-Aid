@@ -35,7 +35,8 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onS
       id: Date.now().toString(),
       ...formData,
       timestamp: '剛剛',
-      urgent: formData.category === 'help_request' || formData.category === 'medical'
+      // Urgent defaults to true for help requests
+      urgent: formData.category === 'help_request'
     };
     onSubmit(newPost);
     onClose();
@@ -70,9 +71,7 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onS
                 className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 text-sm focus:ring-2 focus:ring-gray-200 focus:border-gray-400 focus:outline-none transition-all"
               >
                 <option value="help_request">尋求協助</option>
-                <option value="supplies">提供物資</option>
-                <option value="volunteer">義工報名</option>
-                <option value="medical">醫療需求</option>
+                <option value="volunteer">義務服務</option>
               </select>
             </div>
 
@@ -83,7 +82,7 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onS
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
-                placeholder="例如：急需食水"
+                placeholder="例如：急需食水 / 可以幫手搬野"
                 className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 text-sm focus:ring-2 focus:ring-gray-200 focus:border-gray-400 focus:outline-none transition-all"
               />
             </div>
@@ -95,7 +94,7 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onS
                 rows={3}
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                placeholder="請詳細描述..."
+                placeholder="請詳細描述你需要咩幫手，或者你可以提供咩服務..."
                 className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 text-sm focus:ring-2 focus:ring-gray-200 focus:border-gray-400 focus:outline-none transition-all resize-none"
               />
             </div>

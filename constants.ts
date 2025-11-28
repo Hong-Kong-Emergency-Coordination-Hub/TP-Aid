@@ -3,7 +3,7 @@ import { Post, EmergencyContact } from './types';
 export const MOCK_POSTS: Post[] = [
   {
     id: '1',
-    category: 'official',
+    category: 'government',
     title: '臨時庇護中心已開放',
     description: '大窩邨社區中心現已開放予受火災影響嘅居民暫避。現場提供食水同毛氈。',
     location: '大窩鄰里社區中心',
@@ -32,6 +32,16 @@ export const MOCK_POSTS: Post[] = [
   },
   {
     id: '4',
+    category: 'social_worker',
+    title: '情緒支援熱線',
+    description: '我哋機構有社工提供即時情緒支援，如果感到驚慌或不安，請隨時搵我哋。',
+    location: '網上 / 電話',
+    timestamp: '50 分鐘前',
+    verified: true,
+    contact: '2345-6789'
+  },
+  {
+    id: '5',
     category: 'volunteer',
     title: '結構工程師義工',
     description: '註冊結構工程師，可協助評估低層單位結構安全，有需要請聯絡。',
@@ -40,7 +50,7 @@ export const MOCK_POSTS: Post[] = [
     verified: true
   },
   {
-    id: '5',
+    id: '6',
     category: 'medical',
     title: '臨時急救站',
     description: '紅十字會已喺籃球場附近設立臨時急救站，處理輕傷同吸入濃煙不適。',
@@ -49,12 +59,31 @@ export const MOCK_POSTS: Post[] = [
     verified: true
   },
   {
-    id: '6',
-    category: 'supplies',
-    title: '提供蒸餾水',
-    description: '有一批蒸餾水畀冇水電嘅家庭，請自備容器。',
-    location: 'A座 大堂',
-    timestamp: '3 小時前'
+    id: '7',
+    category: 'housing',
+    title: '提供短期住宿',
+    description: '我有個吉單位喺附近大埔中心，可以暫時畀受影響家庭住兩三日，有水電。',
+    location: '大埔中心',
+    timestamp: '2 小時前',
+    contact: '9876-5432'
+  },
+  {
+    id: '8',
+    category: 'business',
+    title: '免費提供飯盒',
+    description: '我哋茶餐廳準備咗 100 個飯盒，受影響居民可以憑住址證明免費領取。',
+    location: '翠樂街 8 號地舖',
+    timestamp: '3 小時前',
+    verified: true
+  },
+  {
+    id: '9',
+    category: 'organization',
+    title: '物資收集站',
+    description: '關愛隊已設立物資收集站，目前急需樽裝水、乾糧同尿片。',
+    location: '屋苑管理處外',
+    timestamp: '3 小時前',
+    verified: true
   }
 ];
 

@@ -1,4 +1,13 @@
-export type Category = 'volunteer' | 'supplies' | 'help_request' | 'official' | 'medical';
+export type Category = 
+  | 'government'    // 政府資訊
+  | 'business'      // 商鋪資訊
+  | 'organization'  // 組織資訊
+  | 'social_worker' // 社工支援
+  | 'housing'       // 安置 / 房屋
+  | 'volunteer'     // 義工
+  | 'supplies'      // 物資
+  | 'help_request'  // 求助
+  | 'medical';      // 醫療
 
 export type TabType = 'all' | Category;
 
@@ -12,7 +21,7 @@ export interface Post {
   location: string;
   timestamp: string;
   urgent?: boolean;
-  verified?: boolean; // For NGO/Official posts
+  verified?: boolean; // For NGO/Government posts
   contact?: string;
   status?: PostStatus;
 }

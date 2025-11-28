@@ -11,8 +11,12 @@ interface FilterBarProps {
 
 const TABS: { id: TabType; label: string }[] = [
   { id: 'all', label: '全部' },
-  { id: 'official', label: '官方資訊' },
+  { id: 'government', label: '政府資訊' },
   { id: 'help_request', label: '求助' },
+  { id: 'housing', label: '安置 / 房屋' },
+  { id: 'social_worker', label: '社工支援' },
+  { id: 'organization', label: '組織資訊' },
+  { id: 'business', label: '商鋪資訊' },
   { id: 'volunteer', label: '義工' },
   { id: 'supplies', label: '物資' },
   { id: 'medical', label: '醫療' },
